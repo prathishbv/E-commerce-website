@@ -22,6 +22,13 @@ class Product(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     
+    @property
+    def display_name(self):
+        return self.name
+    
+    def __str__(self):
+        return self.display_name
+    
     def save(self, *args, **kwargs):
         if self.og_price != self.price:
             self.og_price = self.price
@@ -32,6 +39,9 @@ class Product(models.Model):
     
     def get_absolute_url(self):
         return reverse("products:detail", kwargs={"handle": self.handle})
+    
+    def get_manage_url(self):
+        return reverse("products:manage", kwargs={"handle": self.handle})
     
     
 def handle_product_attachment_upload(instance, filename):
