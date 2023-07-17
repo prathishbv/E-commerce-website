@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 from cfehome.env import config
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -23,10 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config("DJANGO_SECRET_KEY", default=None)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DJANGO_DEBUG", cast=bool, default=False)
 
 ALLOWED_HOSTS = []
-
+# ALLOWED_HOST = config("ALLOWLED_HOST", cast=bool, default="")
+# if ALLOWED_HOST:
+#     ALLOWED_HOSTS.append(ALLOWED_HOST.strip())
 
 # Application definition
 
@@ -37,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'products'
+    # internal apps
+    'products',
+    'purchases',
 ]
 
 MIDDLEWARE = [
@@ -81,7 +86,8 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-from .db import *
+
+from .db import * # noqa
 
 
 # Password validation
@@ -123,8 +129,10 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 STATIC_ROOT = BASE_DIR.parent / "local-cdn" / "static"
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR.parent / "local-cdn" / "media"
-
+PROTECTED_MEDIA_ROOT = BASE_DIR.parent / "local-cdn" / "protected"
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+from cfehome.storages.config import *

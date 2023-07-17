@@ -3,3 +3,7 @@ psycopg2-binary
 dj-database-url
 python-decouple
 pillow
+stripe
+django-storages
+boto3
+gunicorn
