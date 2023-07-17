@@ -6,3 +6,4 @@ pillow
 stripe
 django-storages
 boto3
+gunicorn
